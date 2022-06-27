@@ -1,12 +1,19 @@
 package Assignment;
 
+import java.nio.file.DirectoryStream.Filter;
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collector;
@@ -92,14 +99,14 @@ public class Qus17 {
 		List<Qus17> list=new ArrayList<>();
 
 		
-		list.add(new Qus17("Shubham","Ireland", LocalDate.of(2022, 04, 05),LocalDate.of(1995,05,05),LocalDate.of(2025,05,19), "JAVA",22000));
+		list.add(new Qus17("Shubham","Ireland", LocalDate.of(2022, 04, 05),LocalDate.of(1998,06,27),LocalDate.of(2025,05,19), "JAVA",22000));
 		list.add(new Qus17("Prasad","India", LocalDate.of(2022, 05, 24),LocalDate.of(1999,05,05),LocalDate.of(2025,03,18), "AWS",35000));
 
 		list.add(new Qus17("Akshay","pakistan", LocalDate.of(2022, 06, 05),LocalDate.of(1992,04,05),LocalDate.of(2025,02,11), "JAVA",20000));
 
 		list.add(new Qus17("Akash","Hinjewadi", LocalDate.of(2022, 04, 05),LocalDate.of(1995,05,05),LocalDate.of(2025,04,15), "JAVA",26000));
 
-		list.add(new Qus17("nilesh","pune", LocalDate.of(2022, 04, 27),LocalDate.of(1998,05,05),LocalDate.of(2025,07,10), "AWS",29000));
+		list.add(new Qus17("nilesh","pune", LocalDate.of(2022, 06, 27),LocalDate.of(1998,05,05),LocalDate.of(2025,07,10), "AWS",29000));
 		list.add(new Qus17("Vinod","Indore", LocalDate.of(2022, 05, 24),LocalDate.of(1993,05,05),LocalDate.of(2025,06,11), "JAVA",25000));
 
 		System.out.println(list);
@@ -125,6 +132,8 @@ public class Qus17 {
 	
 		System.out.println("maxmium of sal by dept:- " +maxSalary);
 		System.out.println("minimum of sal by dept:- "+minSalary);
+		
+		
 //		Department with highest no of employee and lowest 
 		String deptt1= list.stream()
 				 .map(Qus17::getDept)
@@ -135,21 +144,45 @@ public class Qus17 {
 				 .min(String::compareTo).get();
 		System.out.println("Department with highest no of employee:- "+ deptt1);
 		System.out.println("Department with Lowest no of employee:- "+ deptt2);
-
+		
+		
+		///Current date
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+		   LocalDateTime now = LocalDateTime.now();  
+		   System.out.println("Current Date >>> " + dtf.format(now));
+		   System.out.println("Get month >>> " + now.getMonth());
+		   System.out.println("Current Date >>> " + now.getDayOfMonth());
 		
 //		Total number of years of experience of each employee. 
-		
-		
-//		list.stream().filter(ChronoUnit.DAYS.between(e-e.)).map(i->i.empname).collect(Collectors.toList());
-		
 	
+		   System.out.println("------------------No of Experience In years of each Employee-------");
+           for(Qus17 e:list)
+           {
+               if(e.dor!=null )
+               {
+               int exp=Period.between(e.doj, e.dor).getYears();
+               System.out.println(e.empname+" Experience "+exp+" Years.");
+               }
+           }
 		
 //		Upcoming birthday and job anniversary in current month from current date to last
 		
-//		Function<LocalDate,Integer> key=(a)-> a.getMonthValue()*100+a.getDayOfMonth();
-//		Map<Integer,List<LocalDate>> lookup= list.stream().collect(Collectors.groupingBy(key));
-//				collect(Collectors.groupingBy(key));
-		
+           System.out.println(" ---------------Upcoming birthday and job anniversary Employee-------");
+			
+			LocalDate currentdate=LocalDate.now();
+			
+			List<Qus17> bns=list.stream().filter(e->e.dob.getDayOfMonth()>=currentdate.getDayOfMonth()).collect(Collectors.toList());
+			for (Qus17 a : bns)
+			{
+				System.out.println("Birth day of "+a.empname+" and Birth Date is "+a.dob);
+			}
+			List<Qus17> bnames1=list.stream().filter(e->e.doj.getDayOfMonth()>=currentdate.getDayOfMonth()).collect(Collectors.toList());
+			for (Qus17 a : bnames1)
+			{
+				System.out.println("Job Anniversary of "+a.empname+" and Anniversary Date is "+a.doj);
+			}
+		   
+//		   
 		
 	}
 	
